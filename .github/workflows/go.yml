@@ -37,6 +37,6 @@ jobs:
           set GOOS=windows
           set GOARCH=amd64
           set CGO_CFLAGS=-IC:/msys64/mingw64/include
-          set CGO_LDFLAGS=-LC:/msys64/mingw64/lib -lyara -lcrypto
-          cd $GITHUB_WORKSPACE
+          set CGO_LDFLAGS="-LC:/msys64/mingw64/lib -lyara -lcrypto"
+          cd $Env:GITHUB_WORKSPACE
           go build -tags yara_static -a -ldflags '-s -w -extldflags "-static"' .
