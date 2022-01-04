@@ -13,7 +13,7 @@ jobs:
         uses: msys2/setup-msys2@v2
         with:
           msystem: MSYS
-          path-type: inherit
+          path-type: minimal
           update: true
           install: mingw-w64-x86_64-toolchain mingw-w64-x86_64-pkg-config base-devel openssl-devel
       - name: Install YARA v4.1
