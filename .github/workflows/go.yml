@@ -26,6 +26,9 @@ jobs:
              ./configure
              make
              make install
+             cp -r libyara/include/* /c/msys64/mingw64/include
+             cp -r libyara/.libs/* /c/msys64/mingw64/lib
+             cp libyara/yara.pc /c/msys64/mingw64/lib/pkgconfig
       - name: Set up Go
         uses: actions/setup-go@v2
         with:
