@@ -15,7 +15,7 @@ jobs:
           msystem: MSYS
           path-type: minimal
           update: true
-          install: mingw-w64-x86_64-toolchain mingw-w64-x86_64-pkg-config base-devel openssl-devel unzip
+          install: mingw-w64-x86_64-toolchain mingw-w64-x86_64-pkg-config base-devel openssl-devel autoconf unzip
       - name: Install YARA v4.1
         run: |
              wget -c https://github.com/VirusTotal/yara/archive/refs/tags/v4.1.3.zip -O /tmp/yara.zip
@@ -26,6 +26,7 @@ jobs:
              make
              make install
       - name: Set up Go
+        shell: powershell
         uses: actions/setup-go@v2
         with:
             go-version: 1.17
