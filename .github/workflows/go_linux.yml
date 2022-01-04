@@ -1,4 +1,4 @@
-name: fastfinder_build
+name: fastfinder_build_linux
 
 on: [push, pull_request]
 
