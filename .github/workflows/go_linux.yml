@@ -29,13 +29,11 @@ jobs:
            sudo ./configure
            sudo make
            sudo make install
-           sudo echo "/usr/local/lib" >> /etc/ld.so.conf
-           sudo ldconfig
       - uses: actions/checkout@v2
       - name: Building Fastfinder
         run: |
            cd $GITHUB_WORKSPACE
-           go build -tags yara_static -a -ldflags "-s -w" .
+           go build -a -ldflags "-s -w" .
            ls
            sudo chmod +x fastfinder
            sudo ./fastfinder -h
