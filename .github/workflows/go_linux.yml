@@ -28,15 +28,14 @@ jobs:
           ( cd ../yara-${YARA_VERSION} && ./bootstrap.sh )
           mkdir -p ../yara-build
           ( cd ../yara-build && \
-          ../yara-${YARA_VERSION}/configure --disable-shared --prefix=${HOME}/prefix )
+          ../yara-${YARA_VERSION}/configure --prefix=${HOME}/prefix )
           make -C ../yara-build install
           find ${HOME}/prefix
       - uses: actions/checkout@v2
       - name: Building Fastfinder
         run: |
-           export CGO_CFLAGS="-I${HOME}/../yara-${YARA_VERSION}/libyara/include"
-           export CGO_LDFLAGS="-L${HOME}/../yara-${YARA_VERSION}/libyara/.libs -lyara"
-           go build -a -tags yara_no_pkg_config -ldflags "-s -w" .
+           set PKG_CONFIG_PATH=/usr/local/lib/pkgconfig
+           go build -tags yara_static -a -ldflags '-s -w -extldflags "-static"' .
            ls
            sudo chmod +x fastfinder
            sudo ./fastfinder -h
