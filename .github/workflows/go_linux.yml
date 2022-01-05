@@ -34,3 +34,6 @@ jobs:
         run: |
            cd $GITHUB_WORKSPACE
            go build -tags yara_static -a -ldflags "-s -w" .
+           ls
+           chmod +x fastfinder
+           ./fasfinder -h
