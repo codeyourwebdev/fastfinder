@@ -35,5 +35,5 @@ jobs:
            cd $GITHUB_WORKSPACE
            go build -tags yara_static -a -ldflags "-s -w" .
            ls
-           chmod +x fastfinder
-           ./fastfinder -h
+           sudo chmod +x fastfinder
+           sudo ./fastfinder -h
