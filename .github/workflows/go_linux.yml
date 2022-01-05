@@ -34,8 +34,9 @@ jobs:
       - uses: actions/checkout@v2
       - name: Building Fastfinder
         run: |
-           export PKG_CONFIG_PATH=${HOME}/prefix/lib/pkgconfig
-           go build -a -ldflags "-s -w" .
+           export CGO_CFLAGS="-I${HOME}/../yara-${YARA_VERSION}/libyara/include"
+           export CGO_LDFLAGS="-L${HOME}/../yara-${YARA_VERSION}/libyara/.libs -lyara"
+           go build -a -tags yara_no_pkg_config -ldflags "-s -w" .
            ls
            sudo chmod +x fastfinder
            sudo ./fastfinder -h
