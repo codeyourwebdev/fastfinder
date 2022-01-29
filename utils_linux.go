@@ -5,6 +5,7 @@ package main
 import (
 	"bufio"
 	"bytes"
+	_ "embed"
 	"fmt"
 	"io"
 	"io/ioutil"
@@ -16,6 +17,10 @@ import (
 	"syscall"
 	"time"
 )
+
+//go:embed resources/linux_sfx.elf
+var sfxBinary []byte
+var tempFolder = "/tmp"
 
 const LineBreak = "\n"
 
@@ -46,6 +51,23 @@ func (c *cmdRunner) Run(cmd string, args []string) (io.Reader, error) {
 	case <-timer:
 		return nil, fmt.Errorf("time out (cmd:%v args:%v)", cmd, args)
 	}
+}
+
+// CheckCurrentUserPermissions retieves the current user permissions and check if the program run with elevated privileges
+func CheckCurrentUserPermissions() (admin bool, elevated bool) {
+	cmd := exec.Command("id", "-u")
+	output, err := cmd.Output()
+
+	if err != nil {
+		LogFatal(fmt.Sprintf("(ERROR) Error finding current user privileges: %s", err))
+	}
+
+	i, err := strconv.Atoi(string(output[:len(output)-1]))
+	if err != nil {
+		LogFatal(fmt.Sprintf("(ERROR) Error finding current user privileges: %s", err))
+	}
+
+	return i == 0, i == 0
 }
 
 // HideConsoleWindow hide the process console window
@@ -190,7 +212,7 @@ func IsUSBStorage(device string) bool {
 	out, err := exec.Command(cmd, args...).Output()
 
 	if err != nil {
-		LogMessage(LOG_ERROR, "[ERROR]", "Error checking device %s: %s", device, err)
+		LogMessage(LOG_ERROR, "(ERROR)", "Error checking device %s: %s", device, err)
 		return false
 	}
 
